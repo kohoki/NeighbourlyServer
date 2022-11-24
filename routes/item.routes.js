@@ -26,6 +26,16 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+// find all items
+router.get("/", async (req, res, next) => {
+  try {
+    const foundedItems = await Items.find({ borrowed: false });
+    res.status(201).json({ foundedItems });
+  } catch (error) {
+    res.status(404).json({ message: "No items found" });
+  }
+});
+
 // update item
 router.put("/:id", async (req, res, next) => {
   try {
