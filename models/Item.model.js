@@ -23,7 +23,7 @@ const itemSchema = new Schema(
         default: false,
     },
     borrower: {type: [Schema.Types.ObjectId], ref: 'User'},
-    creator: {type: [Schema.Types.ObjectId], ref: 'User'},
+    creator: {type: Schema.Types.ObjectId, ref: 'User'},
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    
