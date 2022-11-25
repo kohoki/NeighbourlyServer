@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Addresses = require("../models/Adresses.model");
 const User = require("../models/User.model");
-const { isAuthenticated } = require("./../middleware/jwt.middleware.js");
 
 router.get("/:id", async (req, res)=> {
     try {
@@ -36,7 +35,16 @@ router.post('/:id/create', async (req, res) => {
     });
 
 
-
+router.delete("/:id/delete", async (req, res) => {
+    try {
+        const addressId = req.params.id
+        const deletedAddress = await Addresses.findByIdAndDelete(addressId)
+        res.status(201).json(deletedAddress);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" })  
+    }
+})
 
 
 
