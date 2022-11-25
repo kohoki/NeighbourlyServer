@@ -16,6 +16,18 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// find item by item_id
+
+router.get("/borrow/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const item = await Items.findById(id);
+    res.status(201).json({ item });
+  } catch (error) {
+    res.status(404).json({ message: "Item not found" });
+  }
+});
+
 // find item by user_id
 router.get("/:id", async (req, res, next) => {
   try {
