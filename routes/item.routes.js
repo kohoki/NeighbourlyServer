@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Items = require("../models/Item.model");
+const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
@@ -29,7 +30,9 @@ router.get("/:id", async (req, res, next) => {
 // find all items
 router.get("/", async (req, res, next) => {
   try {
-    const foundedItems = await Items.find({ borrowed: false });
+    const foundedItems = await Items.find({ borrowed: false }).populate(
+      "creator"
+    );
     res.status(201).json({ foundedItems });
   } catch (error) {
     res.status(404).json({ message: "No items found" });
