@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Items = require("../models/Item.model");
+const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
@@ -12,6 +13,18 @@ router.post("/", async (req, res, next) => {
     res.status(201).json({ item });
   } catch (error) {
     res.status(404).json({ message: "Item was not created" });
+  }
+});
+
+// find item by item_id
+
+router.get("/borrow/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const item = await Items.findById(id).populate("creator");
+    res.status(201).json({ item });
+  } catch (error) {
+    res.status(404).json({ message: "Item not found" });
   }
 });
 
@@ -29,7 +42,9 @@ router.get("/:id", async (req, res, next) => {
 // find all items
 router.get("/", async (req, res, next) => {
   try {
-    const foundedItems = await Items.find({ borrowed: false });
+    const foundedItems = await Items.find({ borrowed: false }).populate(
+      "creator"
+    );
     res.status(201).json({ foundedItems });
   } catch (error) {
     res.status(404).json({ message: "No items found" });
