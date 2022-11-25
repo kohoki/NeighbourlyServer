@@ -24,6 +24,9 @@ app.use("/", authRouter);
 const profileRouter = require("./routes/profile.routes");
 app.use("/profile", profileRouter);
 
+const addressRouter = require("./routes/addresses.routes");
+app.use("/address", addressRouter);
+
 const itemsRouter = require("./routes/item.routes");
 app.use("/item", itemsRouter);
 

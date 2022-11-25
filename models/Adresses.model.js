@@ -7,8 +7,8 @@ const addressesSchema = new Schema(
         type: String,
         required: true,
     },
-    fullName: {
-        type: String,
+    number: {
+        type: Number,
         required: true,
     },
     street: {
@@ -23,6 +23,7 @@ const addressesSchema = new Schema(
         type: String,
         required: true,
     },
+    creator: {type: Schema.Types.ObjectId, ref: 'User'}
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    
