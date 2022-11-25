@@ -21,7 +21,7 @@ router.post("/", async (req, res, next) => {
 router.get("/borrow/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const item = await Items.findById(id);
+    const item = await Items.findById(id).populate("creator");
     res.status(201).json({ item });
   } catch (error) {
     res.status(404).json({ message: "Item not found" });
