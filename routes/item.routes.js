@@ -15,6 +15,27 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// find item by user_id
+router.get("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const foundedItems = await Items.find({ creator: id });
+    res.status(201).json({ foundedItems });
+  } catch (error) {
+    res.status(404).json({ message: "No items found" });
+  }
+});
+
+// find all items
+router.get("/", async (req, res, next) => {
+  try {
+    const foundedItems = await Items.find({ borrowed: false });
+    res.status(201).json({ foundedItems });
+  } catch (error) {
+    res.status(404).json({ message: "No items found" });
+  }
+});
+
 // update item
 router.put("/:id", async (req, res, next) => {
   try {
