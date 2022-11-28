@@ -3,7 +3,7 @@ const Items = require("../models/Item.model");
 const User = require("../models/User.model");
 const Messages = require("../models/Messages.model");
 
-// create item
+// create communication
 router.post("/create", async (req, res, next) => {
   try {
     const body = req.body;
@@ -29,8 +29,17 @@ router.post("/:id", async (req, res, next) => {
   }
 })
 
-//Update communication array
-
+//Update communication array by pushing new message inside
+router.post("/:messageId/update", async (req, res, next) => {
+  try {
+    const { messageId } = req.params;
+    const body = req.body;
+    const addMessage = await Messages.findByIdAndUpdate(messageId, {$push: { communication: body }}, {new: true});
+    res.status(201).json({addMessage});
+  } catch (error) {
+    res.status(404).json({ message: "Message could not be added to array" });
+  }
+})
 
 
 module.exports = router;
