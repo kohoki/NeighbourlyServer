@@ -81,9 +81,9 @@ router.put("/:id/status", async (req, res, next) => {
     const { id } = req.params;
     const foundItem = await Items.findById(id);
     if (foundItem.borrowed === true) {
-      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: false})
+      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: false}, {new: true})
     } else {
-      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: true})
+      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: true}, {new: true})
     }
     res.status(200).json({changeStatus})
   } catch (error) {
