@@ -2,12 +2,37 @@ const router = require("express").Router();
 const Addresses = require("../models/Adresses.model");
 const User = require("../models/User.model");
 
-router.get("/:id", async (req, res)=> {
+router.get("/:userId", async (req, res)=> {
     try {
-        const userId = req.params.id
+        const {userId} = req.params
         const userObj = await User.findById(userId).populate("addresses")
         res.status(201).json(userObj);
     } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" })
+      }
+})
+
+router.get("/:addressId/edit", async (req, res)=> {
+    try {
+        const {addressId} = req.params
+        console.log(addressId)
+        const AddressObj = await Addresses.findById(addressId)
+        console.log("Address obj", AddressObj)
+        res.status(201).json(AddressObj);
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" })
+      }
+})
+
+router.put("/:addressId/edit", async (req, res) => {
+    try {
+        const {addressId} = req.params
+        const body = req.body;
+        const updatedAddress = await Addresses.findByIdAndUpdate(addressId, body, {new: true})
+        res.status(201).json({updatedAddress});
+    } catch(err){
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" })
       }
@@ -23,7 +48,6 @@ router.post('/:id/create', async (req, res) => {
     }
 
     const newAddress = await Addresses.create({ nameOfAddress, number, street, postalCode, city, creator })
-    console.log("HEY", newAddress.id)
    const userId = req.params.id
    await User.findByIdAndUpdate(userId, { $push: { addresses: newAddress } }, {new: true})
     res.status(201).json({ newAddress });
@@ -35,11 +59,13 @@ router.post('/:id/create', async (req, res) => {
     });
 
 
-router.delete("/:id/delete", async (req, res) => {
+router.delete("/:userId/delete/:addressId", async (req, res) => {
     try {
-        const addressId = req.params.id
+        const userId = req.params.userId
+        const addressId = req.params.addressId
         const deletedAddress = await Addresses.findByIdAndDelete(addressId)
-        res.status(201).json(deletedAddress);
+        const updatedUser = await User.findByIdAndUpdate(userId, { $pull: { addresses: addressId } })
+        res.status(204);
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" })  
