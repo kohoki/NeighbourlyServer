@@ -75,4 +75,20 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
+//Update borrowed status of item
+router.put("/:id/status", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const foundItem = await Items.findById(id);
+    if (foundItem.borrowed === true) {
+      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: false})
+    } else {
+      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: true})
+    }
+    res.status(200).json({changeStatus})
+  } catch (error) {
+    res.status(404).json({ message: "Borrowed status canot be updated" });
+  }
+})
+
 module.exports = router;
