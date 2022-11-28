@@ -134,7 +134,6 @@ router.get('/verify', isAuthenticated, (req, res, next) => {
     res.status(200).json(req.payload);
   });
 
-  //Find all users:
   
  
 module.exports = router;

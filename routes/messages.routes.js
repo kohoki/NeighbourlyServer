@@ -21,10 +21,13 @@ router.post("/create", async (req, res, next) => {
 router.post("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id).populate("messages");
-    const messages = user.messages;
-    console.log('User: ', user);
-    res.status(201).json({messages});
+    //const user = await User.findById(id).populate("messages");
+    //const messages = user.messages;
+    //console.log('User: ', user);
+    //res.status(201).json({messages});
+    const messagesOfUser = await Messages.find({$or: [{lender: id}, {borrower: id}]}).populate({path: "item", select: ["itemName", "image"]}).populate({path: "lender", select: "username"}).populate({path: "borrower", select: "username"});
+    console.log(messagesOfUser);
+    res.status(201).json({messagesOfUser});
   } catch (error) {
     res.status(404).json({ message: "Communication cannot be displayed" });
   }
