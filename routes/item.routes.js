@@ -89,7 +89,7 @@ router.put("/:id/status", async (req, res, next) => {
     }
     res.status(200).json({changeStatus})
   } catch (error) {
-    res.status(404).json({ message: "Borrowed status canot be updated" });
+    res.status(404).json({ message: "Borrowed status cannot be updated" });
   }
 })
 
