@@ -133,5 +133,8 @@ router.get('/verify', isAuthenticated, (req, res, next) => {
     // previously set as the token payload
     res.status(200).json(req.payload);
   });
+
+  //Find all users:
+  
  
 module.exports = router;
