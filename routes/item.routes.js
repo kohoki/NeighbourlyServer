@@ -5,11 +5,13 @@ const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 // create item
-router.post("/", async (req, res, next) => {
+router.post("/:userId", async (req, res, next) => {
   try {
     const body = req.body;
     console.log(body);
     const item = await Items.create(body);
+    const {userId} = req.params
+    await User.findByIdAndUpdate(userId, { $push: { createdItems: item } }, {new: true})
     res.status(201).json({ item });
   } catch (error) {
     res.status(404).json({ message: "Item was not created" });
@@ -64,12 +66,12 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // delete item
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:userId/delete/:itemId", async (req, res) => {
   try {
-    const { id } = req.params;
-    const deletedItem = await Items.findByIdAndDelete(id);
-
-    res.json(deletedItem);
+    const { userId, itemId } = req.params;
+    await Items.findByIdAndDelete(itemId);
+    await User.findByIdAndUpdate(userId, { $pull: { createdItems: itemId } })
+    res.status(204);
   } catch (error) {
     res.status(404).json({ message: "Item has not been deleted" });
   }
