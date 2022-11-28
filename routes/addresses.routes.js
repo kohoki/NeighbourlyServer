@@ -63,8 +63,8 @@ router.delete("/:userId/delete/:addressId", async (req, res) => {
     try {
         const userId = req.params.userId
         const addressId = req.params.addressId
-        const deletedAddress = await Addresses.findByIdAndDelete(addressId)
-        const updatedUser = await User.findByIdAndUpdate(userId, { $pull: { addresses: addressId } })
+        await Addresses.findByIdAndDelete(addressId)
+        await User.findByIdAndUpdate(userId, { $pull: { addresses: addressId } })
         res.status(204);
     } catch (err) {
         console.log(err);
