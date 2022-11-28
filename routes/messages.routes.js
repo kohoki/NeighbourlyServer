@@ -4,7 +4,7 @@ const User = require("../models/User.model");
 const Messages = require("../models/Messages.model");
 
 // create item
-router.post("/", async (req, res, next) => {
+router.post("/create", async (req, res, next) => {
   try {
     const body = req.body;
     console.log(body);
