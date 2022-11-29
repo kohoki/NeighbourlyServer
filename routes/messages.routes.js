@@ -28,7 +28,7 @@ router.post("/:id", async (req, res, next) => {
     const messagesOfUser = await Messages.find({
       $or: [{ lender: id }, { borrower: id }],
     })
-      .populate({ path: "item", select: ["itemName", "image"] })
+      .populate({ path: "item" })
       .populate({ path: "lender", select: "username" })
       .populate({ path: "borrower", select: "username" })
       .populate({ path: "communication.userId", select: "username" });
@@ -54,6 +54,5 @@ router.post("/:messageId/update", async (req, res, next) => {
     res.status(404).json({ message: "Message could not be added to array" });
   }
 });
-
 
 module.exports = router;
