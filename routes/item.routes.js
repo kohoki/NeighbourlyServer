@@ -71,7 +71,7 @@ router.delete("/:userId/delete/:itemId", async (req, res) => {
     const { userId, itemId } = req.params;
     await Items.findByIdAndDelete(itemId);
     await User.findByIdAndUpdate(userId, { $pull: { createdItems: itemId } })
-    res.status(204);
+    res.status(204).json('Item successfully deleted.');
   } catch (error) {
     res.status(404).json({ message: "Item has not been deleted" });
   }
