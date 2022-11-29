@@ -50,10 +50,11 @@ router.post('/signup', (req, res, next) => {
         // If User is unique, proceed to hash the password
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashedPassword = bcrypt.hashSync(password, salt);
+        const userImage = "https://res.cloudinary.com/dv6mgmdzd/image/upload/v1669730887/Project%203%20-%20Neighbourly/userIcon_an6bfl.jpg"
    
         // Create the new user in the database
         // We return a pending promise, which allows us to chain another `then` 
-        return User.create({ email, password: hashedPassword, username });
+        return User.create({ email, password: hashedPassword, username, userImage: userImage });
       })
       .then((createdUser) => {
         // Deconstruct the newly created user object to omit the password

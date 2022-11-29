@@ -1,15 +1,20 @@
 const router = require("express").Router();
 const Items = require("../models/Item.model");
 const User = require("../models/User.model");
+const fileUploader = require('../middleware/cloudinary.config')
 
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 // create item
-router.post("/:userId", async (req, res, next) => {
+router.post("/:userId", fileUploader.single("imageUrl"), async (req, res) => {
   try {
-    const body = req.body;
-    console.log(body);
-    const item = await Items.create(body);
+    const {itemName, description, availability, creator} = req.body;
+    const image = req.file.path
+    const item = await Items.create(
+      {
+        itemName, image, description, availability, creator
+      }
+    );
     const {userId} = req.params
     await User.findByIdAndUpdate(userId, { $push: { createdItems: item } }, {new: true})
     res.status(201).json({ item });
