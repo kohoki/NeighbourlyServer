@@ -9,8 +9,12 @@ router.post("/create", async (req, res, next) => {
     const body = req.body;
     console.log(body);
     const communication = await Messages.create(body);
-    const appendIdToLender = await User.findByIdAndUpdate(body.lender, {$push: {messages: communication._id}});
-    const appendIdToBorrower = await User.findByIdAndUpdate(body.borrower, {$push: {messages: communication._id}});
+    const appendIdToLender = await User.findByIdAndUpdate(body.lender, {
+      $push: { messages: communication._id },
+    });
+    const appendIdToBorrower = await User.findByIdAndUpdate(body.borrower, {
+      $push: { messages: communication._id },
+    });
     res.status(201).json({ communication });
   } catch (error) {
     res.status(404).json({ message: "Communication was not created" });
@@ -21,25 +25,34 @@ router.post("/create", async (req, res, next) => {
 router.post("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const messagesOfUser = await Messages.find({$or: [{lender: id}, {borrower: id}]}).populate({path: "item", select: ["itemName", "image"]}).populate({path: "lender", select: "username"}).populate({path: "borrower", select: "username"}).populate({path: "communication.userId", select: "username"});
+    const messagesOfUser = await Messages.find({
+      $or: [{ lender: id }, { borrower: id }],
+    })
+      .populate({ path: "item", select: ["itemName", "image"] })
+      .populate({ path: "lender", select: "username" })
+      .populate({ path: "borrower", select: "username" })
+      .populate({ path: "communication.userId", select: "username" });
     console.log(messagesOfUser);
-    res.status(201).json({messagesOfUser});
+    res.status(201).json({ messagesOfUser });
   } catch (error) {
     res.status(404).json({ message: "Communication cannot be displayed" });
   }
-})
+});
 
 //Update communication array by pushing new message inside
 router.post("/:messageId/update", async (req, res, next) => {
   try {
     const { messageId } = req.params;
     const body = req.body;
-    const addMessage = await Messages.findByIdAndUpdate(messageId, {$push: { communication: body }}, {new: true});
-    res.status(201).json({addMessage});
+    const addMessage = await Messages.findByIdAndUpdate(
+      messageId,
+      { $push: { communication: body } },
+      { new: true }
+    );
+    res.status(201).json({ addMessage });
   } catch (error) {
     res.status(404).json({ message: "Message could not be added to array" });
   }
-})
-
+});
 
 module.exports = router;
