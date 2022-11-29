@@ -54,12 +54,12 @@ router.get("/", async (req, res, next) => {
 });
 
 // update item
-router.put("/:id", async (req, res, next) => {
+router.put("/:itemId/edit", async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { itemId } = req.params;
     const body = req.body;
-    const updatedItem = await Items.findByIdAndUpdate(id, body, { new: true });
-    res.json({ updatedItem });
+    const updatedItem = await Items.findByIdAndUpdate(itemId, body, { new: true });
+    res.status(201).json({ updatedItem });
   } catch (error) {
     res.status(404).json({ message: "Item has not been changed" });
   }
