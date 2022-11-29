@@ -83,11 +83,12 @@ router.put("/:id/status", async (req, res, next) => {
     const { id } = req.params;
     const foundItem = await Items.findById(id);
     if (foundItem.borrowed === true) {
-      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: false}, {new: true})
+      const changeStatusToFalse = await Items.findByIdAndUpdate(id, {borrowed: false}, {new: true})
+      res.status(200).json({changeStatusToFalse})
     } else {
-      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: true}, {new: true})
+      const changeStatusToTrue = await Items.findByIdAndUpdate(id, {borrowed: true}, {new: true})
+      res.status(200).json({changeStatusToTrue});
     }
-    res.status(200).json({changeStatus})
   } catch (error) {
     res.status(404).json({ message: "Borrowed status cannot be updated" });
   }
