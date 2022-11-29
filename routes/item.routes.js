@@ -81,16 +81,33 @@ router.delete("/:userId/delete/:itemId", async (req, res) => {
 router.put("/:id/status", async (req, res, next) => {
   try {
     const { id } = req.params;
+    const body = req.body;
+    const borrowerId = body.id;
     const foundItem = await Items.findById(id);
+    console.log("Found Item: ", foundItem);
     if (foundItem.borrowed === true) {
-      const changeStatusToFalse = await Items.findByIdAndUpdate(id, {borrowed: false}, {new: true})
+      const changeStatusToFalse = await Items.findByIdAndUpdate(id, {borrowed: false, $pull: {borrower: borrowerId}}, {new: true})
       res.status(200).json({changeStatusToFalse})
     } else {
-      const changeStatusToTrue = await Items.findByIdAndUpdate(id, {borrowed: true}, {new: true})
+      const changeStatusToTrue = await Items.findByIdAndUpdate(id, {borrowed: true, $push: {borrower: borrowerId}}, {new: true})
       res.status(200).json({changeStatusToTrue});
     }
   } catch (error) {
     res.status(404).json({ message: "Borrowed status cannot be updated" });
+  }
+})
+
+//find all items which are currently borrowed by the user
+router.get("/:id/borrowed", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const findUser = await User.findById(id).populate("borrowedItems");
+    console.log("User: ", findUser);
+    const foundedItems = findUser.borrowedItems;
+    console.log("Items borrowed: ", foundedItems);
+    res.status(201).json({ foundedItems });
+  } catch (error) {
+    res.status(404).json({ message: "Borrowed items cannot be found" });
   }
 })
 
