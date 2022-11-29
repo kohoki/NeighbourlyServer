@@ -71,10 +71,26 @@ router.delete("/:userId/delete/:itemId", async (req, res) => {
     const { userId, itemId } = req.params;
     await Items.findByIdAndDelete(itemId);
     await User.findByIdAndUpdate(userId, { $pull: { createdItems: itemId } })
-    res.status(204);
+    res.status(204).json('Item successfully deleted.');
   } catch (error) {
     res.status(404).json({ message: "Item has not been deleted" });
   }
 });
+
+//Update borrowed status of item
+router.put("/:id/status", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const foundItem = await Items.findById(id);
+    if (foundItem.borrowed === true) {
+      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: false}, {new: true})
+    } else {
+      const changeStatus = await Items.findByIdAndUpdate(id, {borrowed: true}, {new: true})
+    }
+    res.status(200).json({changeStatus})
+  } catch (error) {
+    res.status(404).json({ message: "Borrowed status cannot be updated" });
+  }
+})
 
 module.exports = router;

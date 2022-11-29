@@ -65,7 +65,7 @@ router.delete("/:userId/delete/:addressId", async (req, res) => {
         const addressId = req.params.addressId
         await Addresses.findByIdAndDelete(addressId)
         await User.findByIdAndUpdate(userId, { $pull: { addresses: addressId } })
-        res.status(204);
+        res.status(204).json('Address successfully deleted.');
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" })  
