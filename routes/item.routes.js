@@ -101,11 +101,9 @@ router.put("/:id/status", async (req, res, next) => {
 router.get("/:id/borrowed", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const findUser = await User.findById(id).populate("borrowedItems");
-    console.log("User: ", findUser);
-    const foundedItems = findUser.borrowedItems;
-    console.log("Items borrowed: ", foundedItems);
-    res.status(201).json({ foundedItems });
+    const findItems = await Items.find({borrower: id});
+    console.log("Items: ", findItems);
+    res.status(201).json({ findItems });
   } catch (error) {
     res.status(404).json({ message: "Borrowed items cannot be found" });
   }
