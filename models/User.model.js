@@ -36,9 +36,6 @@ const userSchema = new Schema(
     createdItems: {type: [Schema.Types.ObjectId], ref: 'Items'},
     borrowedItems: {type: [Schema.Types.ObjectId], ref: 'Items'},
     messages: {type: [Schema.Types.ObjectId], ref: 'Messages'},
-    rating: {
-      type: String
-    },
     friends: {
       type: String
     },

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User.model");
-const fileUploader = require('../middleware/cloudinary.config')
+const fileUploader = require('../middleware/cloudinary.config');
+const Item = require("../models/Item.model");
 
 
 router.get("/", (req, res, next) => {
@@ -18,10 +19,12 @@ res.status(201).json({updatedUser});
   }
 })
 
-router.post('/:itemId/uploaditem', fileUploader.single("imageUrl"), async (req, res) => {
+router.post('/:itemId/upload/item', fileUploader.single("imageUrl"), async (req, res) => {
   try {
+    const {itemId} = req.params
 const newImage = req.file.path
-res.status(201).json(newImage);
+const updatedItem = await Item.findByIdAndUpdate(itemId, {image: newImage}, {new:true})
+res.status(201).json({updatedItem});
   } catch (error) {
     res.status(404).json({ message: "Photo upload unsuccessful" });
   }
