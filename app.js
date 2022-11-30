@@ -32,12 +32,12 @@ app.use("/item", itemsRouter);
 
 const messagesRouter = require("./routes/messages.routes");
 app.use("/messages", messagesRouter);
-app.use(
-  cors({
-    origin: "https://thunderous-pothos-7bbea3.netlify.app",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://thunderous-pothos-7bbea3.netlify.app",
+//     credentials: true,
+//   })
+// );
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
