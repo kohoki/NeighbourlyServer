@@ -22,21 +22,21 @@ module.exports = (app) => {
   app.set("trust proxy", 1);
 
   // controls a very specific header to pass headers from the frontend
-  app.use(
-    cors({
-      origin: [FRONTEND_URL]
-    })
-  );
+  // app.use(
+  //   cors({
+  //     origin: FRONTEND_URL,
+  //     credentials: true,
+  //   })
+  // );
 
   // In development environment the app logs
   app.use(logger("dev"));
 
-  const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-// in latest body-parser use like below.
-app.use(bodyParser.urlencoded({ extended: true }));
-
+  const bodyParser = require("body-parser");
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded());
+  // in latest body-parser use like below.
+  app.use(bodyParser.urlencoded({ extended: true }));
 
   // To have access to `body` property in the request
   app.use(express.json());
