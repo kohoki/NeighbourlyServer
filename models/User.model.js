@@ -35,7 +35,7 @@ const userSchema = new Schema(
     addresses: {type: [Schema.Types.ObjectId], ref: 'Addresses'},
     createdItems: {type: [Schema.Types.ObjectId], ref: 'Items'},
     borrowedItems: {type: [Schema.Types.ObjectId], ref: 'Items'},
-    messages: {type: [Schema.Types.ObjectId], ref: 'Messages'},
+    messages: {type: [Schema.Types.ObjectId], ref: 'Messages'}, 
     friends: {
       type: String
     },
