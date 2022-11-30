@@ -6,7 +6,7 @@ const fileUploader = require('../middleware/cloudinary.config')
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 // create item
-router.post("/:userId", fileUploader.single("imageUrl"), async (req, res) => {
+router.post("/:userId/create", fileUploader.single("imageUrl"), async (req, res) => {
   try {
     const {itemName, description, availability, creator} = req.body;
     const image = req.file.path
@@ -22,6 +22,10 @@ router.post("/:userId", fileUploader.single("imageUrl"), async (req, res) => {
     res.status(404).json({ message: "Item was not created" });
   }
 });
+
+router.post("/test", (req, res) => {
+  console.log("we did it!", req.body)
+})
 
 // find item by item_id
 
